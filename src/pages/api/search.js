@@ -1,9 +1,13 @@
+import { NextResponse } from 'next/server'
 import { Configuration, OpenAIApi } from "openai";
 import { MongoClient, ServerApiVersion } from "mongodb";
 // import Embeddings from 'basic-embeddings.js';
 import { Web3Storage } from "web3.storage";
 import pako from 'pako';
 
+export const config = {
+  runtime: 'edge',
+};
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -87,7 +91,7 @@ export default async function handler(req, res) {
                     .sort((a, b) => b.similarity - a.similarity)
                     .slice(0, 1000);
     console.log('results:', results);
-    return res.json({
+    return NextResponse.json({
       articles: results,
     });
     // return res.json({ articles: [] });
